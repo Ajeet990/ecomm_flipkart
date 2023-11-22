@@ -1,0 +1,7 @@
+This is a ecommerce site using Node, Express, and mongodb.
+
+functionality 1]
+* We have only one admin
+* Normal users can only add their own products.
+* Only admin can add category.
+* A normal user will create a request to admin if his category not found.
