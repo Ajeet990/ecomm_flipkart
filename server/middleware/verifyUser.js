@@ -12,6 +12,8 @@ export const verifyUser = (req, res, next) => {
     findUserById(userId, (err, data) => {
         if (data) {
             // console.log("user found")
+            // req.currentUserDetail = data
+            req.currentUserId = userId
             next()
         } else {
             return res.status(404).json({success:false, message:"User not found."})

@@ -2,8 +2,10 @@ import React, {useState} from 'react'
 import {toast} from 'react-toastify'
 import { useLogInMutation } from '../Services/authApi'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../Authorization/Auth'
 
 const Login = () => {
+    const auth = useAuth()
     const navigate = useNavigate()
     const [makeUserLogin] = useLogInMutation()
     const [userEmail, setUserEmail] = useState('')
@@ -18,6 +20,12 @@ const Login = () => {
             // console.log("login rst",loginRst)
             if (loginRst.data.success) {
                 toast.success("Login success.")
+                const loggedInUserDetail = {
+                    user_name:loginRst.data.data.username,
+                    user_email:loginRst.data.data.email
+                }
+                localStorage.setItem('flipUserToken',loginRst.data.data.loginToken)
+                auth.login(loggedInUserDetail)
                 navigate('/')
             } else {
                 toast.error(loginRst.data.message)

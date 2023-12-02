@@ -1,7 +1,13 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useAuth } from '../Authorization/Auth'
 
 const Navbar = () => {
+    const auth = useAuth()
+    const handleLogOut = () => {
+        auth.logout()
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -15,7 +21,7 @@ const Navbar = () => {
                             <Link className="nav-link active" aria-current="page" href="#">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to=''>About</Link>
+                            <Link className="nav-link" to='about'>About</Link>
                         </li>
 
                         <li className="nav-item">
@@ -27,13 +33,16 @@ const Navbar = () => {
                         <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <li className="nav-item">
-                        <Link className="btn btn-success mx-1" to='login' type="button">Login</Link>
-                        {/* <Link className='nav-link btn btn-success' type="button">Logout</Link> */}
+                        {
+                            auth.user ? (<Link className='btn btn-success mx-1' type="button" onClick={handleLogOut}>Logout</Link>) : (<Link className="btn btn-success mx-1" to='login' type="button">Login</Link>)
+                        }
                     </li>
                     <div className="btn-group">
-                        <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            User name
-                        </button>
+                        {
+                            auth.user && (
+                                <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{auth.user.user_name}</button>
+                            )
+                        }
                         <ul className="dropdown-menu dropdown-menu-end">
                             <li><Link className="dropdown-item" to=''>Profile</Link></li>
                             <li><Link className="dropdown-item" to=''>My products</Link></li>

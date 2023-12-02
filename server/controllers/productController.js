@@ -5,8 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export const addProduct = (req, res) => {
     const productDetail = req.body
-    const user_token = jwt.decode(req.get('token'))
-    const {userId} = user_token
+    const userId = req.currentUserId
     addProductRepo(productDetail, userId, (err, data) => {
         if (err) return res.status(500).json({message:"Something went wrong."})
         if (data) {
@@ -35,8 +34,7 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const getProducts = async (req, res) => {
-    const user_token = jwt.decode(req.get('token'))
-    const {userId} = user_token
+    const userId = req.currentUserId
     const categories = await Category.find()
     const productList = []
     
