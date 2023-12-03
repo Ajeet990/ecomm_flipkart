@@ -25,16 +25,26 @@ const Navbar = () => {
                         </li>
 
                         <li className="nav-item">
-                            <Link className="nav-link disabled" to='' tabIndex="-1" aria-disabled="true">Contact</Link>
+                            <Link className="nav-link" to='' tabIndex="-1" aria-disabled="true">Cart</Link>
                         </li>
                     </ul>
-                    <form className="d-flex">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    {
+                        auth.user && (
+                            <form className="d-flex">
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                <button className="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        )
+                    }
+
                     <li className="nav-item">
                         {
-                            auth.user ? (<Link className='btn btn-success mx-1' type="button" onClick={handleLogOut}>Logout</Link>) : (<Link className="btn btn-success mx-1" to='login' type="button">Login</Link>)
+                            auth.user ? (
+                                <Link className='btn btn-success mx-1' type="button" onClick={handleLogOut}>Logout</Link>
+                            ) : (<>
+                                <Link className="btn btn-success mx-1" to='login' type="button">Login</Link>
+                                <Link className="btn btn-success mx-1" to='register' type="button">Register</Link>
+                            </>)
                         }
                     </li>
                     <div className="btn-group">

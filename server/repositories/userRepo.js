@@ -19,7 +19,9 @@ export const registerRepo = async (userDetail, result) => {
         email:userDetail.email,
         password:hashPassword,
         mobile:userDetail.mobile,
-        gender:userDetail.gender,
+        gender:userDetail.gender ?? 'Male',
+        isSeller:userDetail.isSeller ?? false,
+        isVerified:userDetail.isVerified ?? false,
         address:address,
         date_created:todayDate,
     })

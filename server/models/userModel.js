@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    isSeller:{
+        type:Boolean,
+        required:true
+    },
+    isVerified:{
+        type:Boolean,
+        required:true
+    },
     address:{
         type:Object,
         required:true

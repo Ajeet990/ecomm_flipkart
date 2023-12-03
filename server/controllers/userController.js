@@ -25,6 +25,7 @@ export const userRegister = async (req, res) => {
                 return res.status(200).json({ success: true, message: "User registered successfully" })
             }
         })
+        // console.log("Detail are:",userDetail)
 
     } catch (err) {
         console.log("Catch block error")
@@ -72,4 +73,8 @@ export const login = async (req, res) => {
         console.log("Catch block error")
         return res.status(400).json(err)
     }
+}
+
+export const uploadProfile = async (req, res) => {
+    console.log("yes here")
 }

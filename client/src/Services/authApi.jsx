@@ -25,8 +25,27 @@ export const authApi = createApi({
                 }
             }),
             // providesTags: ['authApi']
+        }),
+        uploadProfile:builder.mutation({
+            query:(file) => {
+                const body = new FormData()
+                body.append('Content-Type', file.type);
+                body.append('file', file);
+                return {
+                  url: "upload",
+                  method: "POST",
+                  body
+                }
+            }
+        }),
+        register:builder.mutation({
+            query:(userDetail) => ({
+                url:'register',
+                method:'post',
+                body:userDetail
+            })
         })
     })
 })
 
-export const { useLogInMutation, useGetProductListQuery } = authApi
+export const { useLogInMutation, useGetProductListQuery,useUploadProfileMutation, useRegisterMutation } = authApi

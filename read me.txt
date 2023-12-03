@@ -5,3 +5,4 @@ functionality 1]
 * Normal users can only add their own products.
 * Only admin can add category.
 * A normal user will create a request to admin if his category not found.
+* Become a seller. only seller can post their product, normal user can only buy.
