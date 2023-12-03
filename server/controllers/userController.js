@@ -78,3 +78,28 @@ export const login = async (req, res) => {
 export const uploadProfile = async (req, res) => {
     console.log("yes here")
 }
+
+export const checkOtp = async (req, res) => {
+    const otp = req.body.otp
+    const email = req.body.email
+    // console.log(otp, email)
+    const checkOtp = await User.findOne({ registrationOTP:otp, email:email })
+    if (checkOtp) {
+        await User.updateOne({'email':email}, {$set:{'isVerified':true}})
+        return res.status(200).json({success:true, message:"OTP vefified."})
+    } else {
+        return res.status(200).json({success:false, message:"Wrong OTP."})
+    }
+}
+
+export const updateProfile = async (req, res) => {
+    const email = req.body.email
+    const profilePic = req.body.profilePic
+    const checkUser = await User.findOne({ email:email })
+    if (checkUser) {
+        await User.updateOne({'email':email}, {$set:{'profilePic':profilePic}})
+        return res.status(200).json({success:true, message:"Profile updated"})
+    } else {
+        return res.status(200).json({success:false, message:"User not found."})
+    }
+}

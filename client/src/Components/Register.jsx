@@ -2,8 +2,14 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import { registerSchema } from '../Schemas/RegisterSchema'
 import { toast } from 'react-toastify'
-import { useUploadProfileMutation, useRegisterMutation } from '../Services/authApi'
-
+import {
+    useUploadProfileMutation,
+    useRegisterMutation,
+    useSendMailToUserMutation,
+    useUpdateUserProfileMutation
+} from '../Services/authApi'
+import SendMail from '../SendMailSystem/SendMail'
+import { Navigate, useNavigate } from 'react-router-dom'
 const initialValues = {
     username: '',
     email: '',
@@ -17,6 +23,11 @@ const Register = () => {
     const [profile, setProfile] = useState('')
     const [upload] = useUploadProfileMutation()
     const [register] = useRegisterMutation()
+    const history = useNavigate()
+    const [sendMail] = useSendMailToUserMutation()
+    const [updateUserProfile] = useUpdateUserProfileMutation()
+    const [loading, setLoading] = useState(false)
+
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: initialValues,
@@ -25,19 +36,28 @@ const Register = () => {
             if (!profile) {
                 toast.warning("Profile is required.")
             } else {
+                setLoading(true)
                 // console.log("values are:", values)
-                const imageUploadResult = await upload(profile)
-                if (imageUploadResult) {
-                    const registerResult = await register(values)
-                    // console.log("data:", registerResult)
-                    if (registerResult.data.success) {
-                        toast.success(registerResult.data.message)
+                const otp = Math.floor(100000 + Math.random() * 900000)
+                values.registrationOTP = otp
+                const registerResult = await register(values)
+                // console.log("data:", registerResult)
+                if (registerResult.data.success) {
+                    const imageUploadResult = await upload(profile)
+                    // console.log("here",imageUploadResult)
+                    if (imageUploadResult.data.success) {
+                        const data = { email: values.email, otp: otp }
+                        await updateUserProfile({email:values.email, profilePic:imageUploadResult.data.filename})
+                        await sendMail(data)
+                        toast.success("OTP send successfully.")
+                        history('/sendMail', { state: data })
                     } else {
-                        toast.error(registerResult.data.message)
+                        toast.success("Image upload failed.")
                     }
                 } else {
-                    toast.warning("Profile upload failed.")
+                    toast.error(registerResult.data.message)
                 }
+
 
 
             }
@@ -110,7 +130,7 @@ const Register = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label"><u>Become a Seller</u></label><br />
-                    <input type="radio" className='mx-1' name='isSeller' value='true' onChange={handleChange}/>Yes &nbsp;
+                    <input type="radio" className='mx-1' name='isSeller' value='true' onChange={handleChange} />Yes &nbsp;
                     <input type="radio" className='mx-1' name='isSeller' value='false' onChange={handleChange} defaultChecked />No
                 </div>
                 <div className="mb-3">
@@ -120,11 +140,16 @@ const Register = () => {
                     <input type="radio" className='mx-1' name='gender' value='Other' onChange={handleChange} />Other
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1"  className="form-label"><u>Upload profile image</u></label>
-                    <input type="file" className="form-control" id="profileImage" onChange={(e) => setProfile(e.target.files[0])} name="cutomerProfile"/>
+                    <label htmlFor="exampleInputEmail1" className="form-label"><u>Upload profile image</u></label>
+                    <input type="file" className="form-control" id="profileImage" onChange={(e) => setProfile(e.target.files[0])} name="cutomerProfile" />
                 </div>
 
                 <button type="submit" className="btn btn-primary">Register</button>
+                {
+                    loading && (<><div className="spinner-border text-info" role="status"></div>
+                        <span>Please wait. Sending mail... </span>
+                    </>)
+                }
             </form>
         </div>
     )

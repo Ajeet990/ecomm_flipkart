@@ -37,12 +37,20 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    profilePic:{
+        type:String,
+        required:false
+    },
     isSeller:{
         type:Boolean,
         required:true
     },
     isVerified:{
         type:Boolean,
+        required:true
+    },
+    registrationOTP:{
+        type:Number,
         required:true
     },
     address:{

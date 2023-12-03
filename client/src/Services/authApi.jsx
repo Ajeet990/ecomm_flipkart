@@ -44,8 +44,38 @@ export const authApi = createApi({
                 method:'post',
                 body:userDetail
             })
-        })
+        }),
+        checkOtp:builder.mutation({
+            query:(userDetail) => ({
+                url:"checkOtp",
+                method:"POST",
+                body:userDetail
+            })
+        }),
+        sendMailToUser:builder.mutation({
+            query:(userDetail) => ({
+                url:"sendMail",
+                method:"POST",
+                body:userDetail
+            })
+        }),
+        updateUserProfile:builder.mutation({
+            query:(userDetail) => ({
+                url:"updateProfile",
+                method:"POST",
+                body:userDetail
+            })
+        }),
+
     })
 })
 
-export const { useLogInMutation, useGetProductListQuery,useUploadProfileMutation, useRegisterMutation } = authApi
+export const {
+    useLogInMutation,
+    useGetProductListQuery,
+    useUploadProfileMutation,
+    useRegisterMutation,
+    useCheckOtpMutation,
+    useSendMailToUserMutation,
+    useUpdateUserProfileMutation
+} = authApi

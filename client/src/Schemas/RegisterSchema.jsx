@@ -3,7 +3,7 @@ import * as YUP from 'yup'
 export const registerSchema = YUP.object({
     username:YUP.string().min(5).max(30).required("Please enter your username"),
     email:YUP.string().email().required("Please enter your email address"),
-    mobile:YUP.string().min(10).max(15).required("Please enter your phone"),
+    mobile:YUP.string().min(10).max(10).required("Please enter your phone"),
     // gender:YUP.string().required("gender field is required"),
     // address:YUP.string().required("Please enter your address"),
     locality:YUP.string().min(10).required("Please enter locality."),
