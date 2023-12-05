@@ -8,7 +8,11 @@ export const addProductRepo = async (productDetail, userId, result) => {
     const productData = new Product({
         product_id:nanoid(),
         product_name:productDetail.product_name,
+        product_qty:productDetail.qty,
+        product_description:productDetail.description,
+        product_price:productDetail.price,
         category_id:productDetail.category_id,
+        product_image:productDetail.filename,
         addedBy:userId,
         date_created:todayDate,
     })

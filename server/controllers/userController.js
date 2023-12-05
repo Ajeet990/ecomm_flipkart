@@ -40,35 +40,43 @@ export const login = async (req, res) => {
         const userEmailExist = await User.findOne({ email: logInDetails.email })
         // console.log("log", userEmailExist);
         if (userEmailExist) {
-            const {password : hashPass} = userEmailExist
-            const loginRst = await bcrypt.compare(logInDetails.password, hashPass);
-            if (loginRst) {
-                const secret_key = process.env.SECRET_KEY
-                return res.status(200).json({
-                    success: true,
-                    message: "Login success.",
-                    data:{
-                        userId:userEmailExist.userId,
-                        username:userEmailExist.username,
-                        email:userEmailExist.email,
-                        loginToken:jwt.sign({time:Date(), userId:userEmailExist.userId}, secret_key)
-                    }
-                })
+            if (userEmailExist.isVerified) {
+                const { password: hashPass } = userEmailExist
+                const loginRst = await bcrypt.compare(logInDetails.password, hashPass);
+                if (loginRst) {
+                    const secret_key = process.env.SECRET_KEY
+                    return res.status(200).json({
+                        success: true,
+                        message: "Login success.",
+                        data: {
+                            userId: userEmailExist.userId,
+                            username: userEmailExist.username,
+                            email: userEmailExist.email,
+                            loginToken: jwt.sign({ time: Date(), userId: userEmailExist.userId }, secret_key)
+                        }
+                    })
+                } else {
+                    return res.status(200).json({
+                        success: false,
+                        message: "Incorrect password.",
+                        data: []
+                    })
+                }
             } else {
                 return res.status(200).json({
                     success: false,
-                    message: "Incorrect password.",
-                    data:[]
+                    message: "User not verified. Please verify using valid OTP.",
+                    data: []
                 })
             }
         } else {
             return res.status(200).json({
-                success:false,
-                message:"User not registered.",
-                data:[]
+                success: false,
+                message: "User not registered.",
+                data: []
             })
         }
-        
+
     } catch (error) {
         console.log("Catch block error")
         return res.status(400).json(err)
@@ -83,23 +91,23 @@ export const checkOtp = async (req, res) => {
     const otp = req.body.otp
     const email = req.body.email
     // console.log(otp, email)
-    const checkOtp = await User.findOne({ registrationOTP:otp, email:email })
+    const checkOtp = await User.findOne({ registrationOTP: otp, email: email })
     if (checkOtp) {
-        await User.updateOne({'email':email}, {$set:{'isVerified':true}})
-        return res.status(200).json({success:true, message:"OTP vefified."})
+        await User.updateOne({ 'email': email }, { $set: { 'isVerified': true } })
+        return res.status(200).json({ success: true, message: "OTP vefified." })
     } else {
-        return res.status(200).json({success:false, message:"Wrong OTP."})
+        return res.status(200).json({ success: false, message: "Wrong OTP." })
     }
 }
 
 export const updateProfile = async (req, res) => {
     const email = req.body.email
     const profilePic = req.body.profilePic
-    const checkUser = await User.findOne({ email:email })
+    const checkUser = await User.findOne({ email: email })
     if (checkUser) {
-        await User.updateOne({'email':email}, {$set:{'profilePic':profilePic}})
-        return res.status(200).json({success:true, message:"Profile updated"})
+        await User.updateOne({ 'email': email }, { $set: { 'profilePic': profilePic } })
+        return res.status(200).json({ success: true, message: "Profile updated" })
     } else {
-        return res.status(200).json({success:false, message:"User not found."})
+        return res.status(200).json({ success: false, message: "User not found." })
     }
 }

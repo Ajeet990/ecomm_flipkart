@@ -4,7 +4,9 @@ import Category from "../models/categoryModel.js";
 import jwt from 'jsonwebtoken'
 
 export const addProduct = (req, res) => {
+    // console.log("here")
     const productDetail = req.body
+    // console.log("pro detail:",productDetail)
     const userId = req.currentUserId
     addProductRepo(productDetail, userId, (err, data) => {
         if (err) return res.status(500).json({message:"Something went wrong."})

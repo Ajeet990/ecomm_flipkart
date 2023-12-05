@@ -9,9 +9,25 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    product_qty:{
+        type:Number,
+        required:true
+    },
+    product_description:{
+        type:String,
+        required:true
+    },
+    product_price:{
+        type:Number,
+        required:true
+    },
     category_id:{
         type:String,
         required:true
+    },
+    product_image:{
+        type:String,
+        required:false
     },
     addedBy:{
         type:String,

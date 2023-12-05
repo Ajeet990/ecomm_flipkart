@@ -19,7 +19,7 @@ const upload = multer({ storage: storage })
 router.post('/upload', upload.single('file'), (req, res) => {
 const file = req.file
 // console.log("body",req.body)
-return res.status(200).json({success:true, filename:file.filename})
+    return res.status(200).json({success:true, filename:file.filename})
 })
 
 router.post('/register', userRegister)
