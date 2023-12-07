@@ -3,10 +3,12 @@ import { FaPlus } from "react-icons/fa6";
 import Product from './Product';
 import { addProductSchema } from '../Schemas/AddProductSchema'
 import { useFormik } from 'formik'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 // import { productApi } from '../Services/productApi';
 import { useAddProductMutation, useAddProductImageMutation } from '../Services/productApi';
 import { useNavigate } from 'react-router-dom';
+import { useAllCategoryQuery } from '../Services/categoryApi';
+import { useGetProductListQuery } from '../Services/productApi';
 
 
 const initialValues = {
@@ -21,6 +23,9 @@ const MyProducts = () => {
     const [addProductApi] = useAddProductMutation()
     const [uploadProductImage] = useAddProductImageMutation()
     const navigate = useNavigate()
+    const { data: categoryList, error, isLoading } = useAllCategoryQuery()
+    const { data: productList} = useGetProductListQuery()
+    // console.log("pro:", productList.data)
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: initialValues,
@@ -28,7 +33,7 @@ const MyProducts = () => {
         onSubmit: async (values) => {
             if (!productImage) {
                 toast.warning("Product image is required.")
-            } else {   
+            } else {
                 const productImgPath = await uploadProductImage(productImage)
                 values.filename = productImgPath.data.filename
                 // console.log(values)
@@ -88,9 +93,11 @@ const MyProducts = () => {
                                     <label htmlFor="price" className="form-label">Category</label>
                                     <select className="form-select" onChange={handleChange} onBlur={handleBlur} name='category_id' aria-label="Default select example">
                                         <option defaultValue>Select Product Category</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        {
+                                            categoryList?.data.map((category, index) => {
+                                                return (<option key={category.category_id} value={category.category_id}>{category.category_name}</option>)
+                                            })
+                                        } 
                                     </select>
                                     {errors.category_id && touched.category_id ? (
                                         <span className='registerError'>{errors.category_id}</span>) : null
@@ -113,7 +120,10 @@ const MyProducts = () => {
                 </div>
             </div>
 
-            <Product />
+            <Product props={productList?.data}/>
+            {/* {
+                console.log("down",productList?.data)
+            } */}
         </div>
     )
 }

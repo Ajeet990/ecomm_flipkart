@@ -9,6 +9,10 @@ const categorySchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    is_active:{
+        type:Boolean,
+        required:true,
+    },
     date_created:Date,
     date_updated:Date
 })

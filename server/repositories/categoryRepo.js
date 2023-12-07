@@ -16,3 +16,12 @@ export const addCategoryRepo = async (categoryDetail, result) => {
     result(null, true)
 
 }
+
+export const getAllCategories = async (result) => {
+    const allCategory = await Category.find({is_active:true})
+    if (allCategory.length > 0) {
+        return result(null, allCategory)
+    } else {
+        return result("not found",[])
+    }
+}
