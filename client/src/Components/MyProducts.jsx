@@ -9,6 +9,7 @@ import { useAddProductMutation, useAddProductImageMutation } from '../Services/p
 import { useNavigate } from 'react-router-dom';
 import { useAllCategoryQuery } from '../Services/categoryApi';
 import { useGetProductListQuery } from '../Services/productApi';
+import $ from 'jquery'
 
 
 const initialValues = {
@@ -38,6 +39,7 @@ const MyProducts = () => {
                 values.filename = productImgPath.data.filename
                 // console.log(values)
                 await addProductApi(values)
+                $('#addProduct').modal('hide');
                 toast.success("Product addedd.")
                 navigate('/my_product')
             }
@@ -121,9 +123,7 @@ const MyProducts = () => {
             </div>
 
             <Product props={productList?.data}/>
-            {/* {
-                console.log("down",productList?.data)
-            } */}
+    
         </div>
     )
 }

@@ -1,3 +1,7 @@
 .registerError {
     color: red;
 }
+.contentHeight {
+    /* min-height: 72.3vh; */
+    min-height: 100vh;
+}

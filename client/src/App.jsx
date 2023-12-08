@@ -12,6 +12,9 @@ import { AuthProvider } from './Authorization/Auth'
 import About from './Components/About'
 import SendMail from './SendMailSystem/SendMail'
 import MyProducts from './Components/MyProducts'
+import Footer from './Components/Footer'
+
+
 function App() {
   return (
     <>
@@ -26,6 +29,7 @@ function App() {
         <Route path='/my_product' element={<RequireAuth><MyProducts/></RequireAuth>} />
         <Route path='/*' element={<PageNotFound/>} />
       </Routes>
+      <Footer />
     </AuthProvider>
     </>
   )
