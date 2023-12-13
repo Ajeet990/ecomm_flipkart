@@ -15,7 +15,8 @@ export const productApi = createApi({
                 headers:{
                     token:flipUserToken
                 }
-            })
+            }),
+            providesTags: ['productApi']
         }),
         addProduct:builder.mutation({
             query:(productDetail) => ({
@@ -25,7 +26,8 @@ export const productApi = createApi({
                 headers:{
                     token:flipUserToken
                 }
-            })
+            }),
+        invalidatesTags: ['productApi']
         }),
         addProductImage:builder.mutation({
             query:(productImage) => {
@@ -41,6 +43,16 @@ export const productApi = createApi({
                 }
                 }
             }
+        }),
+        getProduct:builder.mutation({
+            query:(productId) => ({
+                url:"product/getProductDetail",
+                method:"POST",
+                body:productId,
+                headers:{
+                    token:flipUserToken
+                }
+            })
         })
     })
 })
@@ -48,5 +60,6 @@ export const productApi = createApi({
 export const {
     useGetProductListQuery,
     useAddProductMutation,
-    useAddProductImageMutation
+    useAddProductImageMutation,
+    useGetProductMutation
 } = productApi

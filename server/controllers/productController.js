@@ -52,3 +52,14 @@ export const getProducts = async (req, res) => {
 
     return res.status(200).json({success:true, message:"Product list", data:productList})
 }
+
+export const getProductById = async (req, res) => {
+    const productId = req.body.productId
+    const productDetail = await Product.find({product_id:productId})
+    // console.log("tt", typeof(productDetail))
+    if (productDetail) {
+        return res.status(200).json({success:true, message:"Product detail", data:productDetail})
+    } else {
+        return res.status(200).json({success:false, message:"Product not found.", data:[]})
+    }   
+}

@@ -13,6 +13,8 @@ import About from './Components/About'
 import SendMail from './SendMailSystem/SendMail'
 import MyProducts from './Components/MyProducts'
 import Footer from './Components/Footer'
+import AddProduct from './Components/AddProduct'
+import EditProduct from './Components/EditProduct'
 
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
         <Route path='/sendMail' element={<SendMail/>} />
         <Route path='/about' element={<RequireAuth><About/></RequireAuth>} />
         <Route path='/my_product' element={<RequireAuth><MyProducts/></RequireAuth>} />
+        <Route path='/add_product' element={<RequireAuth><AddProduct/></RequireAuth>} />
+        <Route path='/edit_product/:product_id' element={<RequireAuth><EditProduct/></RequireAuth>} />
         <Route path='/*' element={<PageNotFound/>} />
       </Routes>
       <Footer />

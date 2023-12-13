@@ -1,5 +1,5 @@
 import express from 'express'
-import {addProduct, deleteProduct, getProducts} from '../controllers/productController.js'
+import {addProduct, deleteProduct, getProducts, getProductById } from '../controllers/productController.js'
 import multer from 'multer'
 
 
@@ -26,5 +26,6 @@ const file = req.file
 productRouter.post('/addProduct', addProduct)
 productRouter.delete('/deleteProduct', deleteProduct)
 productRouter.get('/getProductList', getProducts)
+productRouter.post('/getProductDetail', getProductById)
 
 export default productRouter

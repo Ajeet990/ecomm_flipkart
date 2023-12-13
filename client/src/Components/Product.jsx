@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { FaRupeeSign } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 const Product = (productList) => {
-    // console.log("here", productList?.props)
-    // const [loading, setLoading] = useState(true)
+    
+
     return (
         <div className='container my-2'>
             {
@@ -24,7 +25,8 @@ const Product = (productList) => {
                                             </div>
                                             <div className='col-md-2'>
                                                <FaRupeeSign /> {product.product_price}
-                                                <button className='btn btn-primary'>Add to kart</button>
+                                                {/* <button className='btn btn-primary mx-1' data-product_id={product.product_id} onClick={handleProductEdit}>Edit</button> */}
+                                                <Link to={"/edit_product/"+product.product_id}><button className='btn btn-primary'>Edit</button></Link>
                                             </div>
                                         </div>
                                     )
